@@ -1,0 +1,32 @@
+CREATE TABLE public.heap_table(
+id serial PRIMARY KEY,
+name text);
+
+CREATE TABLE public.hash(
+id serial PRIMARY KEY,
+name text) PARTITION BY hash(id);
+
+CREATE TABLE public.hash_1 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 0);
+CREATE TABLE public.hash_2 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 1);
+CREATE TABLE public.hash_3 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 2);
+CREATE TABLE public.hash_4 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 3);
+CREATE TABLE public.hash_5 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 4);
+CREATE TABLE public.hash_6 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 5);
+CREATE TABLE public.hash_7 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 6);
+CREATE TABLE public.hash_8 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 7);
+CREATE TABLE public.hash_9 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 8);
+CREATE TABLE public.hash_10 PARTITION OF public.hash
+FOR VALUES WITH (MODULUS 10, REMAINDER 9);
+
+INSERT INTO public.heap_table(name) SELECT random_string() FROM generate_series(1, 1000000);
+
+INSERT INTO public.hash(name) SELECT random_string() FROM generate_series(1, 1000000);
