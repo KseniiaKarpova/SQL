@@ -1,32 +1,78 @@
-CREATE FUNCTION complex_in(cstring)
- RETURNS complex
- AS 'complex'
- LANGUAGE C IMMUTABLE STRICT;
- 
- CREATE FUNCTION complex_out(complex)
- RETURNS cstring
- AS 'complex'
- LANGUAGE C IMMUTABLE STRICT;
- 
- CREATE FUNCTION complex_recv(internal)
- RETURNS complex
- AS 'complex'
- LANGUAGE C IMMUTABLE STRICT;
- 
- CREATE FUNCTION complex_send(complex)
- RETURNS bytea
- AS 'complex'
- LANGUAGE C IMMUTABLE STRICT;
-
-CREATE TYPE complex (
- internallength = 16,
- input = complex_in,
- output = complex_out,
- receive = complex_recv,
- send = complex_send,
- alignment = double
+CREATE TYPE complex AS (
+    r       double precision,
+    i       double precision
 );
 
+CREATE FUNCTION complex_add(complex, complex) RETURNS
+ complex AS
+$$ 
+ BEGIN
+ RETURN ($1.r - $2.r, $1.i - $2.i)::complex;
+ END;
+$$ LANGUAGE plpgsql; 
+
+
+CREATE FUNCTION complex_minus(complex, complex) RETURNS
+ complex AS
+$$ 
+ BEGIN
+ RETURN ($1.r + $2.r, $1.i + $2.i)::complex;
+ END;
+$$ LANGUAGE plpgsql; 
+
+CREATE OR REPLACE FUNCTION complex_final(
+state complex
+) RETURNS complex AS $$
+BEGIN
+RAISE NOTICE '= % + i%', state.r, state.i;
+RETURN state;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE AGGREGATE minus_complex(complex) (
+sfunc = complex_minus,
+stype = complex,
+finalfunc = complex_final,
+);
+   
+CREATE FUNCTION complex_multiplication(complex, complex) RETURNS
+ complex AS
+$$ 
+ BEGIN
+ RETURN (($1.r * $2.r) - ($1.i * $2.i) , ($1.r * $2.i) + ($1.i * $2.r))::complex;
+ END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE AGGREGATE multiplication_complex(complex) (
+sfunc = complex_multiplication,
+stype = complex,
+finalfunc = complex_final,
+);
+                                                          
+                                                          
+CREATE FUNCTION complex_division(complex, complex) RETURNS
+ complex AS
+$$ 
+ BEGIN
+ RETURN ((($1.r * $2.r) + ($1.i * $2.i))/($2.r*$2.r + $2.i*$2.i), (($1.i * $2.r) + ($1.r * $2.i))/($2.r*$2.r + $2.i*$2.i))::complex;
+ END;
+$$ LANGUAGE plpgsql;
+
+CREATE AGGREGATE division_complex(complex) (
+sfunc = complex_division,
+stype = complex,
+finalfunc = complex_final,
+);                                                                                                   
+
+CREATE AGGREGATE sum_complex(complex) (
+sfunc = complex_add,
+stype = complex,
+finalfunc = complex_final,
+initcond = '(0,0)'
+);
+                                                                                                   
 CREATE OPERATOR + (
  leftarg = complex,
  rightarg = complex,
