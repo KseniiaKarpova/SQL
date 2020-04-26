@@ -10,10 +10,10 @@ $$
 BEGIN
    FOR i IN 1..5 LOOP
       FOR j IN 1..5 LOOP
-        m.points[i][j] := $1.points[i][j] +$2.points[i][j]
+        m.points[i][j] := $1.points[i][j] +$2.points[i][j];
       END LOOP;
    END LOOP;
-  RETURN m;
+  RETURN ROW(m)::matrix;
  END;
 $$ LANGUAGE plpgsql; 
 
