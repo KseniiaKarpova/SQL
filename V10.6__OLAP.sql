@@ -31,7 +31,7 @@ CREATE AGGREGATE sum_matrix(matrix) (
 sfunc = matrix_add,
 stype = matrix,
 finalfunc = matrix_final,
-initcond = '({{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}})',
+initcond = '('{{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0},{0,0,0,0,0}}')',
 combinefunc = matrix_add,
 parallel = safe
 );
