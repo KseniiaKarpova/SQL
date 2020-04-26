@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION matrix_add(matrix, matrix) RETURNS
  matrix AS
 $$ 
  DECLARE
-  m matrix:= '("{{0, 0, 0, 0, 0} , {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0},{0, 0, 0, 0, 0},{0, 0, 0, 0, 0}}")';
+  m matrix:= ('("{{0, 0, 0, 0, 0} , {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0},{0, 0, 0, 0, 0},{0, 0, 0, 0, 0}}")');
 BEGIN
    FOR i IN 1..5 LOOP
       FOR j IN 1..5 LOOP
