@@ -7,6 +7,6 @@ BEGIN
         $1.points[i][j] := $1.points[i][j] +$2.points[i][j];
       END LOOP;
    END LOOP;
-  RETURN ROW($1)::matrix;
+  RETURN $1;
  END;
 $$ LANGUAGE plpgsql; 
