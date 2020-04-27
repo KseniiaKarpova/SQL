@@ -1,0 +1,3 @@
+SELECT min(A) OVER(PARTITION BY B,C ORDER BY B,C)
+FROM public.BTree_t 
+ORDER BY C,B;
