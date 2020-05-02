@@ -50,7 +50,8 @@ $$
       format('ALTER TABLE %s ADD CONSTRAINT partition_check check ( id >= %s and id <= %s );',
       table_name_str, NEW.id / 100000 * 100000, (NEW.id / 100000 + 1) * 100000); 
     EXECUTE
-    format('CREATE TRIGGER %s INSTEAD OF UPDATE ON %s FOR EACH ROW EXECUTE FUNCTION redirect_update();', 'trg_redirect_update_' || table_name_str, table_name_str);  
+    format('CREATE TRIGGER %s INSTEAD OF INSERT OR UPDATE ON %s
+    FOR EACH ROW EXECUTE PROCEDURE redirect_update();', 'trg_redirect_update_' || table_name_str, table_name_str);  
    END IF; 
  EXECUTE 
  format('INSERT INTO %s VALUES(%s, %L);',
@@ -63,6 +64,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER tigger_create_table
 BEFORE INSERT ON public.hub_table FOR EACH ROW 
 EXECUTE FUNCTION create_table();
+
 
 
 INSERT INTO public.hub_table 
