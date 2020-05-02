@@ -14,7 +14,7 @@ DELETE FROM users WHERE id=OLD.id AND name=OLD.name; INSERT INTO users VALUES(NE
 END; 
 $$ LANGUAGE plpgsql; 
  
-
+CREATE OR REPLACE FUNCTION dynamic_create_table() RETURNS TRIGGER AS $$ DECLARE table_name_str VARCHAR; check_table VARCHAR; 
 BEGIN table_name_str := 'users_part_' || (NEW.id / 100000 + 1) :: VARCHAR; 
  
 SELECT relname INTO check_table FROM pg_class WHERE relname=table_name_str; IF check_table ISNULL THEN EXECUTE  format('CREATE TABLE %s (like users including all) INHERITS (users);', table_name_str); 
