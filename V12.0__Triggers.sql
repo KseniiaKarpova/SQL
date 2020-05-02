@@ -1,5 +1,5 @@
 CREATE TABLE public.hub_table(
-  id serial PRIMARY KEY, 
+  id INTEGER, 
   name VARCHAR); 
 
 CREATE INDEX index_id_hub_table ON public.hub_table(id); 
@@ -69,4 +69,4 @@ EXECUTE FUNCTION create_table();
 
 
 INSERT INTO public.hub_table(name) 
-SELECT (random()*100) FROM generate_series(1,1000000) AS g(i);
+SELECT ((random() * 1000000)::integer + 1),  (random()*100) FROM generate_series(1,1000000) AS g(i);
