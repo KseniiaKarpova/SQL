@@ -14,7 +14,7 @@ RETURNS event_trigger AS
 $$ DECLARE obj record; 
   BEGIN 
   FOR obj IN SELECT * FROM pg_event_trigger_ddl_commands() LOOP 
-    INSERT INTO test_log VALUES (CURRENT_DATE, USER::regrole, obj.object_identity); 
+    INSERT INTO DDL_LOG VALUES (CURRENT_DATE, USER::regrole, obj.object_identity); 
   END LOOP; 
   END; 
 $$ LANGUAGE plpgsql; 
