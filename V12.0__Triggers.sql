@@ -25,8 +25,7 @@ CREATE EVENT TRIGGER trigger_ddl_log
   EXECUTE FUNCTION write_into_ddl_log(); 
   
 CREATE OR REPLACE FUNCTION redirect_update() 
-RETURNS TRIGGER 
-AS
+RETURNS TRIGGER AS
 $$ 
   BEGIN 
   DELETE FROM hub_table WHERE id=OLD.id AND name=OLD.name;
@@ -37,8 +36,7 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION create_table()
-RETURNS TRIGGER 
-AS 
+RETURNS TRIGGER AS 
 $$ 
   DECLARE table_name_str VARCHAR;
   check_table VARCHAR; 
