@@ -6,7 +6,7 @@ CREATE INDEX index_id_hub_table ON public.hub_table(id);
 
 CREATE TABLE DDL_LOG( 
   time date, 
-  username regrole, 
+  username varchar, 
   table_name varchar); 
   
 CREATE OR REPLACE FUNCTION write_into_ddl_log() 
@@ -14,7 +14,7 @@ RETURNS event_trigger AS
 $$ DECLARE obj record; 
   BEGIN 
   FOR obj IN SELECT * FROM pg_event_trigger_ddl_commands() LOOP 
-    INSERT INTO DDL_LOG VALUES (CURRENT_DATE, USER::regrole, obj.object_identity); 
+    INSERT INTO DDL_LOG VALUES (CURRENT_DATE, USER, obj.object_identity); 
   END LOOP; 
   END; 
 $$ LANGUAGE plpgsql; 
