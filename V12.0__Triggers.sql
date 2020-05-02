@@ -29,8 +29,8 @@ RETURNS TRIGGER
 AS
 $$ 
   BEGIN 
-  DELETE FROM users WHERE id=OLD.id AND name=OLD.name;
-  INSERT INTO users VALUES(NEW.id, NEW.name);
+  DELETE FROM hub_table WHERE id=OLD.id AND name=OLD.name;
+  INSERT INTO hub_table VALUES(NEW.id, NEW.name);
   RETURN NULL; 
   END; 
 $$ LANGUAGE plpgsql;
@@ -43,11 +43,11 @@ $$
   DECLARE table_name_str VARCHAR;
   check_table VARCHAR; 
   BEGIN 
-  table_name_str := 'users_part_' || (NEW.id / 100000 + 1) :: VARCHAR; 
+  table_name_str := 'hub_table_part_' || (NEW.id / 100000 + 1) :: VARCHAR; 
   SELECT relname INTO check_table FROM pg_class WHERE relname=table_name_str;
   IF check_table ISNULL THEN 
     EXECUTE 
-      format('CREATE TABLE %s (like users including all) INHERITS (users);', table_name_str); 
+      format('CREATE TABLE %s (like table including all) INHERITS (hub_table);', table_name_str); 
     EXECUTE
       format('ALTER TABLE %s ADD CONSTRAINT partition_check check ( id >= %s and id <= %s );',
       table_name_str, NEW.id / 100000 * 100000, (NEW.id / 100000 + 1) * 100000); 
