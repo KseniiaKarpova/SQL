@@ -68,4 +68,5 @@ BEFORE INSERT ON public.hub_table FOR EACH ROW
 EXECUTE FUNCTION create_table();
 
 
-INSERT INTO public.hub_table(name) VALUES 'test' FROM generate_series(1,1000000) AS g(i);
+INSERT INTO public.hub_table(name) 
+SELECT (random()*100) FROM generate_series(1,1000000) AS g(i);
