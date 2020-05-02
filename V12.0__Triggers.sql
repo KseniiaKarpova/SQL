@@ -53,7 +53,7 @@ $$
       table_name_str, NEW.id / 100000 * 100000, (NEW.id / 100000 + 1) * 100000); 
     EXECUTE  
       format('CREATE TRIGGER %s INSTEAD OF UPDATE ON %s FOR EACH ROW EXECUTE FUNCTION redirect_update();',
-      'trg_redirect_update_' || table_name_str, table_name_str); 
+      'trigger_redirect_update_' || table_name_str, table_name_str); 
    END IF; 
  EXECUTE 
  format('INSERT INTO %s VALUES(%s, %L);',
