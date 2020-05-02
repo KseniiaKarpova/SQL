@@ -47,7 +47,7 @@ $$
   SELECT relname INTO check_table FROM pg_class WHERE relname=table_name_str;
   IF check_table ISNULL THEN 
     EXECUTE 
-      format('CREATE TABLE %s (like table including all) INHERITS (hub_table);', table_name_str); 
+      format('CREATE TABLE %s (like hub_table including all) INHERITS (hub_table);', table_name_str); 
     EXECUTE
       format('ALTER TABLE %s ADD CONSTRAINT partition_check check ( id >= %s and id <= %s );',
       table_name_str, NEW.id / 100000 * 100000, (NEW.id / 100000 + 1) * 100000); 
