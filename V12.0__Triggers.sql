@@ -51,7 +51,7 @@ $$
       table_name_str, NEW.id / 100000 * 100000, (NEW.id / 100000 + 1) * 100000); 
     EXECUTE
     format('CREATE TRIGGER %s INSTEAD OF INSERT OR UPDATE ON %s
-    FOR EACH ROW EXECUTE PROCEDURE redirect_update();', 'trg_redirect_update_' || table_name_str, table_name_str);  
+    FOR EACH ROW EXECUTE PROCEDURE redirect_update();', 'trigger_redirect_update_' || table_name_str, table_name_str);  
    END IF; 
  EXECUTE 
  format('INSERT INTO %s VALUES(%s, %L);',
