@@ -11,9 +11,9 @@ CREATE TABLE public.GIST_tbl(
     id   serial PRIMARY KEY,
     content varchar);
 
-CREATE INDEX gin_idx ON public.GIN_tbl USING GIN(content);
+CREATE INDEX gin_idx ON public.GIN_tbl USING GIN(to_tsvector('english',content));
 CREATE INDEX btree_idx ON public.BTree_tbl USING btree(content);
-CREATE INDEX gist_idx ON public.GIST_tbl USING GIST(content);
+CREATE INDEX gist_idx ON public.GIST_tbl USING gist(content);
 
 
 INSERT INTO public.GIN_tbl(content)
