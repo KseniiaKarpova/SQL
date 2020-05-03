@@ -5,7 +5,6 @@ PREPARE ps(INTEGER, VARCHAR) AS
   FOR i in 1..100 LOOP
     EXECUTE ps(i, 'string');
   END LOOP;
-  END;
 DEADLLOCATE ps;
 COMMIT;
 $$ LANGUAGE plpgsql; 
