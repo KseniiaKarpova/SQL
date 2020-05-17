@@ -1,1 +1,1 @@
-SELECT * FROM public.f1();
+SELECT f1();
