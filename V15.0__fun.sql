@@ -1,5 +1,5 @@
 CREATE FUNCTION f1() RETURNS SETOF public.brin_table AS $$
-SELECT * FROM public.brin_table
+SELECT name FROM public.brin_table
 WHERE id=1;
 $$ LANGUAGE SQL;
 
@@ -8,7 +8,7 @@ RETURNS TEXT AS $$
 DECLARE
 str RECORD;
 BEGIN
-SELECT * INTO str FROM public.brin_table WHERE id=1;
+SELECT name INTO str FROM public.brin_table WHERE id=1;
 RETURN str;
 END;
 $$ LANGUAGE plpgsql;
