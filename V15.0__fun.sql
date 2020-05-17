@@ -1,5 +1,6 @@
-CREATE FUNCTION f1() RETURNS SETOF public.brin_table AS $$
-SELECT name FROM public.brin_table
+CREATE FUNCTION f1() RETURNS SETOF RECORD AS $$
+SELECT name AS value 
+FROM public.brin_table
 WHERE id=1;
 $$ LANGUAGE SQL;
 
